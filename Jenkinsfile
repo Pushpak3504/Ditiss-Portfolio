@@ -4,8 +4,6 @@ pipeline {
     environment {
         AWS_REGION           = 'ap-south-1'
         S3_BUCKET            = 'portfolio-pushpak3504'
-        AWS_ACCESS_KEY_ID     = credentials('aws-jenkins')
-        AWS_SECRET_ACCESS_KEY = credentials('aws-jenkins')
     }
 
     stages {
@@ -31,11 +29,16 @@ pipeline {
 
         stage('Deploy to S3') {
             steps {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-jenkins']]) {
                 sh '''
+                export PATH=$PATH:/usr/local/bin:/usr/bin:/var/lib/jenkins/.local/bin
+                echo "🚀 Deploying to S3 bucket: $S3_BUCKET"
                 aws s3 sync . s3://$S3_BUCKET --region $AWS_REGION --delete --exclude ".git/*" --exclude "Jenkinsfile"
                 '''
             }
         }
+    }
+
     }
 
     post {
