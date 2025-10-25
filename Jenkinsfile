@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/Pushpak3504/Ditiss-Portfolio.git', credentialsId: 'github-jenkins'
+                git branch: 'main', url: 'https://github.com/Pushpak3504/Ditiss-Portfolio.git'
             }
         }
 
@@ -40,7 +40,7 @@ pipeline {
 
     post {
         success {
-            echo 'Deployment successful and CloudFront cache invalidated.'
+            echo 'Deployment successful'
         }
         failure {
             echo 'Deployment failed. Check the logs.'
